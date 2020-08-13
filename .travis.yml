@@ -4,6 +4,6 @@ node_js:
 services:
   - docker
 install:
-  - npm ci
+  - npm install
 before_script:
   - npm start &
