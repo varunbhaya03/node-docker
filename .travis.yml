@@ -1,0 +1,28 @@
+language: node_js
+
+node_js:
+  - 12
+
+cache:
+  npm: true
+
+services:
+  - docker
+
+install:
+  - npm install
+
+stages:
+  - build
+  # - name: deploy
+  #   if: branch = master
+
+jobs:
+  include:
+    - stage: build
+      script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker build -t node-latest
+        - docker images
+        - docker tag node-latest $DOCKER_USERNAME/node-latest
+        - docker push $DOCKER_USERNAME/node-latest
