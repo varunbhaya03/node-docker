@@ -13,15 +13,20 @@ install:
   - npm install
 
 stages:
-  - build
+  - name: test
+  - name: build
+    if: branch = master
   # - name: deploy
   #   if: branch = master
 
 jobs:
   include:
+    - stage: test
+      script:
+        - npm run test
     - stage: build
       script:
-        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker login -u "$DOCKER_USERNAME" --password-stdin
         - docker build -t node-latest .
         - docker images
         - docker tag node-latest $DOCKER_USERNAME/node-latest
