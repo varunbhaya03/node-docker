@@ -9,20 +9,25 @@ cache:
 services:
   - docker
 
+branches:
+  only:
+    - master
+
 install:
   - npm install
 
 stages:
-  - name: test
-  - name: build
-    if: branch = master
+  - test
+  - build
 
 jobs:
   include:
     - stage: test
+      name: "Running tests!"
       script:
         - npm run test
     - stage: build
+      name: "Docker build and push"
       script:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - docker build -t node-latest .
