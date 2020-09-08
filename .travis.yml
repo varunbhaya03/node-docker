@@ -26,7 +26,7 @@ jobs:
         - npm run test
     - stage: build
       script:
-        - docker login -u "$DOCKER_USERNAME" --password-stdin
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - docker build -t node-latest .
         - docker images
         - docker tag node-latest $DOCKER_USERNAME/node-latest
