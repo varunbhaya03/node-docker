@@ -33,7 +33,8 @@ jobs:
       name: "Docker build and push"
       env: GIT_VERSION=${git describe --always}
       script:
-        - docker build -t node-server:${GIT_VERSION} .
+        - echo $GIT_VERSION
+        - docker build -t node-server:$GIT_VERSION .
         - docker images
         - docker tag node-server:${GIT_VERSION} $DOCKER_USERNAME/node-server:${GIT_VERSION}
         - docker push $DOCKER_USERNAME/node-server:${GIT_VERSION}
