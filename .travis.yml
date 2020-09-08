@@ -13,6 +13,9 @@ branches:
   only:
     - master
 
+before_script:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    
 install:
   - npm install
 
@@ -29,8 +32,6 @@ jobs:
     - stage: build
       name: "Docker build and push"
       script:
-        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - docker build -t node-latest .
-        - docker images
         - docker tag node-latest $DOCKER_USERNAME/node-latest
         - docker push $DOCKER_USERNAME/node-latest
